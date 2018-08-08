@@ -1,0 +1,256 @@
+<div ng-include=" 'auth-wrapper' " class="auth-wrapper" ng-if="showLoginPage"></div>
+
+<main ng-if="!showLoginPage" class="wallet-box">
+    <article class="row">
+        <article class="row block">
+            <section>
+                <nav class="nav-bar">
+
+                    <div class="create__btn_bond">
+                        <div id="create__btn" class="btn-airon btn-circle btn-shadown" ng-click="showAddMenu()">
+                            <i class="material-icons left">add</i> Create
+                        </div>
+                    </div>
+
+                    <div id="backPlate" class="dropdown-back" ng-show="dropdownWalletMenu || dropdownOptionsMenu || dropdownEquivalentMenu" ng-click="hideMenu()"></div>
+
+                    <div class="airon-dropdown airon-dropdown-action__pos">
+                        <div class="dropdown-menu dropdown-menu-left airon-dropdown-block" ng-show="dropdownWalletMenu">
+                            <div class="airon-dropdown-icon-b" ng-click="addWalletModal.open()">
+                                <div class="airon-dropdown-icon">
+                                    <i class="material-icons">add_circle_outline</i>
+                                    <i class="material-icons">account_balance_wallet</i>
+                                </div>
+                                <span>Add Wallet for View</span>
+                            </div>
+                            <div class="airon-dropdown-icon-b" ui-sref="generate-wallet">
+                                <div class="airon-dropdown-icon">
+                                    <i class="material-icons">fiber_new</i>
+                                    <i class="material-icons">account_balance_wallet</i>
+                                </div>
+                                <span>Create a New Wallet</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="first__icon"></div>
+
+                    <div class="airon-icon" id="paymentBtn" ng-if="selectedWalletObj !== null">
+                        <div class="btn-floating dis" ng-click="sendTxModalOpen()">
+                            <i class="material-icons">payment</i>
+                        </div>
+                        <span>Payment</span>
+                    </div>
+
+                    <div class="airon-icon" id="copyBtn" ng-if="selectedWalletObj !== null">
+                        <div class="btn-floating dis" ng-click="copyToClipboard()">
+                            <i class="material-icons">filter_none</i>
+                        </div>
+                        <span>Copy address</span>
+                    </div>
+
+                    <div class="airon-icon" id="refteshBtn" ng-if="statusLogin">
+                        <div class="btn-floating dis" ng-click="refresh()">
+                            <i class="material-icons">refresh</i>
+                        </div>
+                        <span>Refresh</span>
+                    </div>
+
+                    <div class="airon-icon" id="historyBtn" ng-if="selectedWalletObj !== null">
+                        <div class="btn-floating dis" ng-click="goEx()">
+                            <i class="material-icons">view_headline</i>
+                        </div>
+                        <span>History</span>
+                    </div>
+
+                    <div class="airon-icon" id="equivalentBtn" ng-if="selectedWalletObj !== null">
+                        <div class="btn-floating dis" ng-click="showEquivalent()">
+                            <i class="material-icons">attach_money</i>
+                        </div>
+                        <span>Equivalent</span>
+                    </div>
+
+                    <div class="airon-icon" id="optionsBtn" ng-if="selectedWalletObj !== null">
+                        <div class="btn-floating dis" ng-click="showOption()">
+                            <i class="material-icons">more_vert</i>
+                        </div>
+                        <span>Options</span>
+                    </div>
+
+                </nav>
+
+                <div class="airon-dropdown airon-dropdown-option__pos" id="optionsBox">
+                    <div class="dropdown-menu dropdown-menu-left airon-dropdown-row" ng-show="dropdownOptionsMenu">
+                        <div class="airon-dropdown-icon-b" ng-click="renameWalletModal.open()">
+                            <span>Rename wallet</span>
+                        </div>
+                        <div class="airon-dropdown-icon-b" ng-click="delWallet()">
+                            <span>Delete wallet</span>
+                        </div>
+                        <div id="add-wallet__oprion" class="airon-dropdown-icon-b" ng-click="addWalletModal.open()">
+                            <div class="airon-dropdown-icon">
+                                <i class="material-icons">add_circle_outline</i>
+                                <i class="material-icons">account_balance_wallet</i>
+                            </div>
+                            <span>Add Wallet for View</span>
+                        </div>
+                        <div id="gen-wallet__oprion" class="airon-dropdown-icon-b" ui-sref="generate-wallet">
+                            <div class="airon-dropdown-icon">
+                                <i class="material-icons">fiber_new</i>
+                                <i class="material-icons">account_balance_wallet</i>
+                            </div>
+                            <span>Create a New Wallet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="airon-dropdown airon-dropdown-equivalent__pos" id="equivalentBox">
+                    <div class="dropdown-menu dropdown-menu-left airon-dropdown-row" ng-show="dropdownEquivalentMenu">
+                        <div ng-show="ajaxReq.type=='ETH'">
+                            <h5 translate="sidebar_Equiv" class="equivalent-text">Equivalent Values:</h5>
+                            <div class="equivalent">
+                                <ul>
+                                    <li>BTC:
+                                        <span class="mono wrap">{{selectedWalletObj.btcBalance | number}}</span>
+                                    </li>
+                                    <li>USD:
+                                        <span class="mono wrap">{{selectedWalletObj.usdBalance | currency:"$"}}</span>
+                                    </li>
+                                    <li>CHF:
+                                        <span class="mono wrap">{{selectedWalletObj.chfBalance | currency:" "}}</span>
+                                    </li>
+                                </ul>
+                                <ul>
+                                    <li>REP:
+                                        <span class="mono wrap">{{selectedWalletObj.repBalance | number}}</span>
+                                    </li>
+                                    <li>EUR:
+                                        <span class="mono wrap">{{selectedWalletObj.eurBalance | currency:"€"}}</span>
+                                    </li>
+                                    <li>GBP:
+                                        <span class="mono wrap">{{selectedWalletObj.gbpBalance | currency:"£"}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <p class="equivalent-text">
+                                <small> These are only the equivalent values for ETH, not tokens. Sorry! </small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="wallet-scroll" id="walletHolder">
+                    <div ng-if="wallets.length == 0" class="wallet-no">
+                        <p ng-if="!loading">No wallets.
+                            <a ng-click="showAddWalletModal()">Add wallet</a> now or
+                            <a ng-click="showCreateWalletUrl()">Create a New Wallet</a>
+                        </p>
+                        <p ng-if="loading">Loading...</p>
+                    </div>
+                    <div class="wallet-block" ng-repeat="wallet in wallets" ng-class="{'active': selectedWalletOutside == wallet}" ng-click="selectWallet($index)">
+
+                        <div class="wallet-line">
+                            <div class="wallet-title">{{ wallet.name }}</div>
+                            <i class="wallet-arrow material-icons" ng-click="toggleWallet(wallet)">{{wallet.hide ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+                        </div>
+
+                        <div class="wallet-address">{{ wallet.address }}</div>
+
+                        <!-- group eth -->
+                        <div class="wallet-group wallet-eth" ng-class="{'activeToken': (selectedWalletObj == wallet && selectedMethod == 'eth')}"
+                            ng-click="selectPay($parent.$index, 'eth', wallet)">
+                            <span class="wallet-count-eth">{{ wallet.balance }}</span>
+                            <span class="wallet-name-eth">ETH</span>
+                        </div>
+
+                        <!-- group favour -->
+                        <div class="wallet-group wallet-token" ng-repeat="token in wallet.tokenList" ng-if="token.IsFavour == true" ng-class="{'activeToken': selectedTokenObj == token}"
+                            ng-click="selectPay($index, 'token', token)">
+                            <span class="wallet-count">{{ token.balance }}</span>
+                            <span class="wallet-name">{{ token.symbol }}</span>
+                            <i class="material-icons" ng-click="updateTokenIsFavour(token)">{{ token.IsFavour ? 'star' : 'star_border' }}</i>
+                        </div>
+
+                        <!-- group hide -->
+                        <div class="wallet-group wallet-token" ng-repeat="token in wallet.tokenList" ng-if="!wallet.hide && token.IsFavour != true"
+                            ng-class="{'activeToken': selectedTokenObj == token}" ng-click="selectPay($index, 'token', token)">
+                            <span class="wallet-count">{{ token.balance }}</span>
+                            <span class="wallet-name">{{ token.symbol }}</span>
+                            <i class="material-icons" ng-click="updateTokenIsFavour(token)">{{ token.IsFavour ? 'star' : 'star_border' }}</i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </article>
+</main>
+
+<!-- Modal Tx -->
+<article class="modal fade" id="sendTxModal" tabindex="-1" ng-controller='sendTxCtrl' ng-click="resetPay($event)">
+    <section ng-include=" 'send-tx-stage_0' " ng-if="txState == 0" ng-controller="decryptWalletAironCtrl" class="modal-dialog"></section>
+
+    <section ng-include=" 'send-tx-stage_mnemonicModel' " ng-if="txState == 'mnemonicModel'" ng-controller="decryptWalletAironCtrl"
+        class="modal-dialog"></section>
+
+    <section ng-include=" 'send-tx-stage_1' " ng-if="txState == 1" class="modal-dialog"></section>
+
+    <section ng-include=" 'send-tx-stage_2' " ng-if="txState == 2" class="modal-dialog"></section>
+
+    <section ng-include=" 'send-tx-stage_3' " ng-if="txState == 3" class="modal-dialog"></section>
+</article>
+
+<!-- Modal Add Wallet -->
+<article class="modal fade" id="addWallet" tabindex="-1">
+    <section class="modal-dialog">
+        <section class="modal-content">
+
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Dialog">&times;</button>
+
+                <h2 class="modal-title text-center">
+                    <span>Add Wallet</span>
+                </h2>
+
+                <div class="add-wallet">
+                    <input class="form-control" placeholder="New Wallet Name" ng-model="newWalletName" type="text" ng-class="Validator.isAlphaNumericSpace(newWalletName) && !isExistName(newWalletName) ? 'is-valid' : 'is-invalid'">
+                    <input class="form-control" placeholder="0x3f0efedfe0a0cd611f2465fac9a3699f92d6a06613bc3ead4f786856f5c73e9c" ng-model="newWalletAddress"
+                        type="text" ng-class="Validator.isValidAddress(newWalletAddress) && !isExistAddress(newWalletAddress)? 'is-valid' : 'is-invalid'">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="addWallet(newWalletName, newWalletAddress)">
+                    Save
+                </button>
+            </div>
+
+        </section>
+    </section>
+</article>
+
+<article class="modal fade" id="renameWallet" tabindex="-1">
+    <section class="modal-dialog">
+        <section class="modal-content">
+
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close Dialog">&times;</button>
+
+                <h2 class="modal-title text-center">
+                    <span>Rename wallet</span>
+                </h2>
+
+                <div class="form-group">
+                    <input class="form-control" placeholder="New Wallet Name" ng-model="rename.newWalletName" type="text" ng-class="Validator.isAlphaNumericSpace(newWalletName) ? 'is-valid' : 'is-invalid'">
+                </div>
+            </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="renameWallet()">
+                    Rename
+                </button>
+            </div>
+
+        </section>
+    </section>
+</article>
