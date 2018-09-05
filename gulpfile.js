@@ -57,18 +57,23 @@ function notifyFunc(msg) {
 
 
 // HTML / TPL Pages
-let htmlFiles = app + 'layouts/*.html';
-let tplFiles = app + 'includes/*.tpl';
+let htmlLayouts = app + 'layouts/*.html';
+let htmlFiles = [
+    htmlLayouts,
+    app + 'includes/head.html',
+    app + 'includes/header.html',
+    app + 'includes/alerts.html',
+    app + 'includes/footer.html'
+];
+let htmlIncludes = app + 'includes/**/*.{tpl,html}';
 
 gulp.task('html', function(done) {
-    return gulp.src(htmlFiles)
+    return gulp.src(htmlLayouts)
         .pipe(plumber({ errorHandler: onError }))
         .pipe(fileinclude({ prefix: '@@', basepath: '@file' }))
         .pipe(gulp.dest(dist))
-        .pipe(gulp.dest(dist_CX))
         .pipe(notify(onSuccess('HTML')))
 });
-
 
 
 // styles: Compile and Minify Less / CSS Files
@@ -90,7 +95,6 @@ gulp.task('styles', function() {
         .pipe(cssnano({ autoprefixer: false, safe: true }))
         .pipe(rename(less_destFileMin))
         .pipe(gulp.dest(less_destFolder))
-        .pipe(gulp.dest(less_destFolder_CX))
         .pipe(notify(onSuccess('Styles')))
 });
 
@@ -115,7 +119,6 @@ function bundle_js(bundler) {
         .pipe(buffer())
         .pipe(rename(js_destFile))
         .pipe(gulp.dest(js_destFolder))
-        .pipe(gulp.dest(js_destFolder_CX))
         .pipe(notify(onSuccess('JS')))
 }
 
@@ -177,35 +180,26 @@ let readMe = './README.md';
 
 gulp.task('copy', ['staticJS'], function() {
     gulp.src(imgSrcFolder)
-        .pipe(gulp.dest(dist + 'images'))
-        .pipe(gulp.dest(dist_CX + 'images'));
+        .pipe(gulp.dest(dist + 'images'));
 
     gulp.src(fontSrcFolder)
-        .pipe(gulp.dest(dist + 'fonts'))
-        .pipe(gulp.dest(dist_CX + 'fonts'));
+        .pipe(gulp.dest(dist + 'fonts'));
 
     gulp.src(staticJSSrcFile)
-        .pipe(gulp.dest(dist + 'js'))
-        .pipe(gulp.dest(dist_CX + 'js'));
+        .pipe(gulp.dest(dist + 'js'));
 
     gulp.src(jQueryFile)
-        .pipe(gulp.dest(dist + 'js'))
-        .pipe(gulp.dest(dist_CX + 'js'));
+        .pipe(gulp.dest(dist + 'js'));
 
     gulp.src(jsonFile)
-        .pipe(gulp.dest(dist))
-        .pipe(gulp.dest(dist_CX));
+        .pipe(gulp.dest(dist));
 
     gulp.src(readMe)
         .pipe(gulp.dest(dist));
 
-    gulp.src(bin)
-        .pipe(gulp.dest(dist + 'bin'));
-
-    return gulp.src(cxSrcFiles)
-        .pipe(gulp.dest(dist_CX + 'browser_action'))
-
-    .pipe(notify(onSuccess(' Copy ')))
+    return gulp.src(bin)
+        .pipe(gulp.dest(dist + 'bin'))
+        .pipe(notify(onSuccess(' Copy ')));
 });
 
 
@@ -383,11 +377,16 @@ gulp.task('pushlive', ['getVersion'], function() {
 // git push --tags
 // gulp pushlive ( git subtree push --prefix dist origin gh-pages )
 
-gulp.task('watchJS',      function() { gulp.watch(js_watchFolder,   ['js']            ) })
 gulp.task('watchJSDebug', function() { gulp.watch(js_watchFolder,   ['js-debug']      ) })
 gulp.task('watchJSProd',  function() { gulp.watch(js_watchFolder,   ['js-production'] ) })
-gulp.task('watchLess',    function() { gulp.watch(less_watchFolder, ['styles']        ) })
-gulp.task('watchPAGES',   function() { gulp.watch(htmlFiles,        ['html']          ) })
+
+// Use
+gulp.task('watchIncludes', function () { gulp.watch(htmlIncludes, ['js']) })
+gulp.task('watchJS', function () { gulp.watch(js_watchFolder, ['js']) })
+gulp.task('watchLess', function () { gulp.watch(less_watchFolder, ['styles']) })
+gulp.task('watchLayouts', function () { gulp.watch(htmlFiles, ['html']) })
+gulp.task('watch', ['watchJS', 'watchLess', 'watchLayouts', 'watchIncludes'])
+
 gulp.task('watchTPL',     function() { gulp.watch(tplFiles,         ['html']          ) })
 gulp.task('watchCX',      function() { gulp.watch(cxSrcFiles,       ['copy']          ) })
 
@@ -405,7 +404,8 @@ gulp.task('zipit',  function(cb) { runSequence('clean', 'zip', cb);             
 
 gulp.task('commit', function(cb) { runSequence('add', 'commitV', 'tag', cb);                   });
 
-gulp.task('watch',     ['watchJS',     'watchLess', 'watchPAGES', 'watchTPL', 'watchCX'])
+
+
 gulp.task('watchProd', ['watchJSProd', 'watchLess', 'watchPAGES', 'watchTPL', 'watchCX'])
 
 gulp.task('build', ['js', 'html', 'styles', 'copy']);

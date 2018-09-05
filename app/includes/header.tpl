@@ -26,6 +26,8 @@
   <link href="images/fav/manifest.json" rel="manifest">
   <link href="images/fav/safari-pinned-tab.svg" rel="mask-icon" color="#2f99b0">
   <link href="images/fav/favicon.ico" rel="shortcut icon">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
   <meta name="apple-mobile-web-app-title" content="Airon.io &middot; Your Key to Ethereum">
   <meta name="application-name" content="Airon.io">
   <meta name="msapplication-config" content="images/fav/browserconfig.xml">
@@ -242,6 +244,13 @@
             <a tabindex="0" aria-label="nav item: {{tab.name | translate}}" translate="{{tab.name}}"></a>
           </li>
           }
+
+          <li class="nav-item help navbar-right">
+            <a class="btn-airon-menu">    
+                Logout <i class="material-icons">exit_to_app</i>
+            </a>
+          </li>
+
           <!--
           <li class="nav-item help">
             <a href="https://myetherwallet.github.io/knowledge-base/" target="_blank" rel="noopener noreferrer">

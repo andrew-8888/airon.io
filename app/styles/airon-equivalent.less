@@ -1,0 +1,21 @@
+.equivalent {
+  display: flex;
+  flex-direction: row;
+
+  ul {
+    padding: 10px;
+
+    @media screen and (max-width: @screen-sm) {
+      padding: 1px;
+    }
+
+    li {
+      list-style-type: none;
+      width: 157px;
+    }
+  }
+
+  &-text {
+    margin: 10px;
+  }
+}

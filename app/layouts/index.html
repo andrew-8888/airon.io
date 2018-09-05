@@ -1,38 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mewApp">
 
-@@include( '../includes/header.tpl', { "site": "mew" } )
+<head>
+    <title>Airon.io</title>
+    <base href="/">
+    <meta charset="utf-8">
 
-<section class="container" style="min-height: 50%" ng-controller='viewCtrl'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <div class="tab-content" >
+    <link href="images/fav/favicon.ico" rel="shortcut icon">
 
-    @@include( '../includes/generateWallet.tpl',     { "site": "mew" } )
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="css/etherwallet-master.min.css">
 
-    @@include( '../includes/viewWalletInfo.tpl',     { "site": "mew" } )
+    @@include('../includes/head.html')
 
-    @@include( '../includes/sendTx.tpl',             { "site": "mew" } )
+    <script src="https://apis.google.com/js/client:platform.js" async defer></script>
+    <script type="text/javascript" src="js/etherwallet-static.min.js"></script>
+    <script type="text/javascript" src="js/etherwallet-master.js"></script>
+</head>
 
-    @@include( '../includes/tokenCreation.tpl',     { "site": "mew" } )
+<body ng-controller="mainCtrl">
 
-    @@include( '../includes/txStatus.tpl',           { "site": "mew" } )
+    <section ng-if="doneLoading">
+        @@include( '../includes/header.html', { "site": "mew" } )
 
-    @@include( '../includes/bulkGenerate.tpl',       { "site": "mew" } )
+        <style>.fix { min-height: calc(100vh - 261px); }</style>
 
-    @@include( '../includes/print.tpl',              { "site": "mew" } )
+        <section class="container" ng-controller='viewCtrl' ng-class="{'gcenter fix': !statusLogin}">
 
-  </div>
+            <section ui-view></section>
 
+            @@include('../includes/alerts.tpl')
 
-  @@include('../includes/alerts.tpl')
+        </section>
 
+        @@include( '../includes/footer.tpl', { "site": "mew" } )
+    </section>
 
-  <!--
-  <section class="loading-wrap" ng-hide="1==1">
-    <div class="loading">
-      <img src="images/loading.gif" />
-      <h1> Loading... </h1>
-  </section>
-  -->
+    <section class="loading-wrap" ng-if="!doneLoading">
+        <h1> Loading... </h1>
+    </section>
 
-</section>
+</body>
 
-@@include( '../includes/footer.tpl', { "site": "mew" } )
+</html>

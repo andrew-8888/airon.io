@@ -1,0 +1,151 @@
+<section class="modal-content">
+
+    <div class="modal-body">
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close Dialog">&times;</button>
+
+        <h2 class="modal-title text-center">
+            <span>You are about to send</span>...
+        </h2>
+
+        <table class="table text-center">
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{wallet.getAddressString()}}" watch-var="wallet.getAddressString()">
+                        </div>
+                        <p>
+                            <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
+                                {{wallet.getChecksumAddressString()}}
+                            </strong>
+                        </p>
+                    </td>
+                    <td ng-show="tx.sendMode=='ether'" class="mono">
+                        ->
+                        <br />
+                        <h4 class="text-danger">
+                            {{tx.value}} {{unitReadable}}
+                        </h4>
+                    </td>
+                    <td ng-show="tx.sendMode!=='ether'" class="mono">
+                        ->
+                        <br />
+                        <h4 class="text-primary">
+                            {{tx.value}} {{unitReadable}}
+                        </h4>
+                    </td>
+                    <td ng-show="tx.sendMode=='ether'">
+                        <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tx.to}}" watch-var="tx.to"></div>
+                        <p>
+                            <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
+                                {{tx.to}}
+                            </strong>
+                        </p>
+                    </td>
+                    <td ng-show="tx.sendMode!=='ether'">
+                        <div class="addressIdenticon med" title="Address Indenticon" blockie-address="{{tokenTx.to}}" watch-var="tokenTx.to"></div>
+                        <p>
+                            <strong ng-show="tx.sendMode=='ether'" class="send-modal__addr">
+                                {{tokenTx.to}}
+                            </strong>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <br />
+
+        <div class="wallet-table">
+            <div class="wallet-table-line">
+                <span class="mono">To Address:</span>
+                <span class="mono push">{{parsedSignedTx.to}}</span>
+            </div>
+            <div>
+                <small class="mono">If sending tokens, this should be the token contract address.</small>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">From Address:</span>
+                <span class="mono push">{{parsedSignedTx.from}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Amount to Send:</span>
+                <span class="mono push">{{parsedSignedTx.value}} ETH</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Account Balance:</span>
+                <span class="mono push">{{parsedSignedTx.balance}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Coin:</span>
+                <span class="mono push">{{parsedSignedTx.from}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Network:</span>
+                <span class="mono push">{{ajaxReq.type}} by {{ajaxReq.service}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Gas Limit:</span>
+                <span class="mono push">{{parsedSignedTx.gasLimit}}</span>
+            </div>
+
+
+            <div class="wallet-table-line">
+                <span class="mono">Gas Price:</span>
+                <span class="mono push">{{parsedSignedTx.gasPrice.gwei}} GWEI
+                    <small>({{parsedSignedTx.gasPrice.eth}} ETH)</small>
+                </span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Max TX Fee:</span>
+                <span class="mono push">{{parsedSignedTx.txFee.eth}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Nonce:</span>
+                <span class="mono push">{{parsedSignedTx.nonce}}</span>
+            </div>
+
+            <div class="wallet-table-line">
+                <span class="mono">Data:</span>
+                <span class="mono push hide-tx">{{parsedSignedTx.data}}</span>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <h4 class="text-center">
+            <span translate="SENDModal_Content_1">You are about to send</span>
+            <strong ng-show="tx.sendMode=='ether'" class="mono">{{tx.value}} {{unitReadable}}</strong>
+            <strong ng-show="tx.sendMode!=='ether'" class="mono">{{tokenTx.value}} {{unitReadable}}</strong>
+            <span translate="SENDModal_Content_2">to address</span>
+            <strong ng-show="tx.sendMode=='ether'" class="mono">{{tx.to}}.</strong>
+            <strong ng-show="tx.sendMode!=='ether'" class="mono">{{tokenTx.to}}</strong>
+        </h4>
+        <p translate="SENDModal_Content_3">
+            Are you sure you want to do this?
+        </p>
+        <br />
+        <button class="btn btn-default" ng-click="$airon.txState = 2">
+            Back
+        </button>
+        <button class="btn btn-primary" ng-click="sendTx()" translate="SENDModal_Yes">
+            Yes, I am sure! Make transaction.
+        </button>
+    </div>
+
+    <p class="small text-center" style="padding: 0px 5px;">
+        <a href="https://myetherwallet.github.io/knowledge-base/transactions/transactions-not-showing-or-pending.html" target="_blank"
+            ref="noopener noreferrer">
+            The network is a bit overloaded. If you're having issues with TXs, please read me.
+        </a>
+    </p>
+</section>

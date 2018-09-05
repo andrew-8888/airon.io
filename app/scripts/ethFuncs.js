@@ -2,11 +2,18 @@
 var ethFuncs = function() {}
 ethFuncs.gasAdjustment = 40;
 ethFuncs.validateEtherAddress = function(address) {
-    if (address.substring(0, 2) != "0x") return false;
-    else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) return false;
-    else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) return true;
-    else
+    if (address.substring(0, 2) != "0x") {
+        return false;
+    }
+    else if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+        return false;
+    }
+    else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+        return true;
+    }
+    else {
         return this.isChecksumAddress(address);
+    }
 }
 ethFuncs.isChecksumAddress = function(address) {
     return address == ethUtil.toChecksumAddress(address);
@@ -29,7 +36,7 @@ ethFuncs.trimHexZero = function(hex) {
     return '0x' + hex;
 }
 ethFuncs.padLeftEven = function(hex) {
-    hex = hex.length % 2 != 0 ? hex : hex;
+    hex = hex.length % 2 != 0 ? '0' + hex : hex;
     return hex;
 }
 ethFuncs.addTinyMoreToGas = function(hex) {
